@@ -71,6 +71,24 @@
     --global-input-focus-borderColor: var(--global-color-alpha);
     --global-input-focus-boxShadowColor: var(--global-color-alpha-x-transparent);
     --global-input-focus-boxShadow: 0 0 0 3px var(--global-input-focus-boxShadowColor);
+
+
+    --global-color-error: #FF3333;
+    --global-input-error-borderColor: #FF3333;
+}
+
+@keyframes bounce{
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-100px); }
+    100% { transform: translateY(0); }
+}
+
+@keyframes spin { 
+    from { 
+        transform: rotate(0deg); 
+    } to { 
+        transform: rotate(360deg); 
+    }
 }
 
 /*------------------------------------*\
@@ -609,6 +627,15 @@ input::placeholder {
 .c-form-field--option {
     display: flex;
     align-items: center;
+    position:relative;
+}
+
+.c-form-field:focus-within .c-label-floating {
+    transform: translateY( -24px );
+}
+
+.c-form-field .is-floating{
+    transform: translateY( -24px );
 }
 
 /*
@@ -617,16 +644,21 @@ input::placeholder {
     Class to put on all input="text" like form inputs
 */
 
+.has-error {
+    --c-label-color: var(--global-color-error);
+    --c-input-borderColor: var(--global-input-error-borderColor);
+  }
+
 .c-input {       
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     width: 100%;
-    border: 1px solid var(--global-input-borderColor);
+    border: var(--global-borderWidth) solid var(--c-input-borderColor, var(--global-input-borderColor));
     /* border: 1px solid var(--global-color-neutral-xxx-light); */
     border-radius: var(--global-borderRadius);
     background-color: var(--global-input-backgroundColor);
-    color: var(--global-input-color);
+    color: var(--input-color, var(--global-input-color));
     font-family: inherit;
     font-size: 16px;
     line-height: calc(var(--global-baseline) * 3);
@@ -644,6 +676,25 @@ input::placeholder {
     border-color: var(--global-input-focus-borderColor);
     box-shadow: var(--global-input-focus-boxShadow);
 }
+
+.c-like__symbol{
+    width: 20px;
+    fill: var(--color-neutral-x-light);
+    /* animation-name: bounce;
+    animation-timing-function: ease; */
+}
+
+.c-like__symbol:active{
+    width: 19px;
+    fill: #D80027;
+    transform: scale(0.8);
+    animation-name: spin;
+    animation-duration: 500ms;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+}
+
+
 
 /*
 Input password with toggle checkbox on top of it needs
@@ -667,16 +718,29 @@ more padding on the right to avoid overlap
 */
 
 .c-label {
-    --label-color: var(--global-color-neutral-xx-dark);
+    /* --label-color: var(--global-color-neutral-xx-dark); */
+    display: flex;
+    justify-content: space-between;
     margin-bottom: 0;
     padding-bottom: var(--global-whitespace-sm);
     font-size: 14px;
     line-height: 16px;
-    color: var(--label-color);
+    color: var(--c-label-color, var(--global-color-neutral-xx-dark));
 }
 
+
 .c-label--option {
-    padding-bottom: 0;
+    /* padding-bottom: 0; */
+    position: absolute;
+    top: 12px;
+    left: 8px;
+    padding: 4px 8px;
+    will-change: transform;
+    transform: translateY( 0 );
+    transition: transform 200ms ease-in-out;
+    box-shadow: 0 0 4px 4px rgba(255,255,255,0.8);
+    background: white;
+    z-index: 1;
 }
 
 /*
